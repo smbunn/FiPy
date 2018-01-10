@@ -9,6 +9,12 @@ import config
 # Initialize LoRa in LORAWAN mode.
 lora = LoRa(mode=LoRa.LORAWAN)
 
+# Colors
+off = 0x000000
+red = 0xff0000
+green = 0x00ff00
+blue = 0x0000ff
+yellow = 0xffff00
 # Set up KotahiNet channels
 lora.add_channel(0, frequency=864862500, dr_min=0, dr_max=5)
 lora.add_channel(1, frequency=865062500, dr_min=0, dr_max=5)
@@ -18,6 +24,9 @@ lora.add_channel(4, frequency=865985000, dr_min=0, dr_max=5)
 lora.add_channel(5, frequency=866200000, dr_min=0, dr_max=5)
 lora.add_channel(6, frequency=866400000, dr_min=0, dr_max=5)
 lora.add_channel(7, frequency=866600000, dr_min=0, dr_max=5)
+
+# Turn off hearbeat LED
+pycom.heartbeat(False)
 
 # create an ABP authentication params
 dev_addr = struct.unpack(">l", binascii.unhexlify('00 70 C3 4D'.replace(' ','')))[0]
@@ -40,7 +49,10 @@ s.setblocking(True)
 for count in range (20):  #Run this loop for 200 times. Possibly it would be better to run infinite.
 # make the socket blocking
     s.setblocking(True)
-
+    pycom.rgbled(off)
+    time.sleep(0.5)
+    pycom.rgbled(red)
+    time.sleep(2)
     buffer = b'test123 ' + bytes([count])  # Build what we want to send in the Send buffer
     #the test123 is static and the bytes count will progress to tell us that different data is being sent
     print('Send number', count, 'Buffer=', buffer) # Print Buffer for debugging
@@ -53,3 +65,4 @@ for count in range (20):  #Run this loop for 200 times. Possibly it would be bet
     s.setblocking(False)
     data = s.recv(64)
     print(data)
+    time.sleep(58)  # wait time between join tries
