@@ -50,7 +50,7 @@ for count in range (20):  #Run this loop for 200 times. Possibly it would be bet
 # make the socket blocking
     s.setblocking(True)
     pycom.rgbled(off)
-    time.sleep(0.5)
+    time.sleep(0.6)
     pycom.rgbled(red)
     time.sleep(2)
     pycom.rgbled(off)
