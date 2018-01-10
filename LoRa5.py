@@ -53,6 +53,7 @@ for count in range (20):  #Run this loop for 200 times. Possibly it would be bet
     time.sleep(0.5)
     pycom.rgbled(red)
     time.sleep(2)
+    pycom.rgbled(off)
     buffer = b'test123 ' + bytes([count])  # Build what we want to send in the Send buffer
     #the test123 is static and the bytes count will progress to tell us that different data is being sent
     print('Send number', count, 'Buffer=', buffer) # Print Buffer for debugging
