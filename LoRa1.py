@@ -41,6 +41,7 @@ lora.add_channel(2, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
 #lora.join(activation=LoRa.ABP, auth=(dev_eui, app_eui, app_key), timeout=0) #, dr=config.LORA_NODE_DR)
 # join a network using ABP (Activation By Personalization)
 lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
+
 pycom.rgbled(red)
 
 # wait until the module has joined the network
@@ -73,14 +74,20 @@ time.sleep(5.0)
 while True:
     for i in range (255):
         pycom.rgbled(blue)
-        s.send(b'PKT #' + bytes([i]))
+        buffer = 'test123 ' + str(i)  # Build what we want to send in the Send buffer
+        #the test123 is static and the bytes count will progress to tell us that different data is being sent
+        print('Send number', i, 'Buffer=', buffer) # Print Buffer for debugging
+        s.send(buffer)  # send buffer to TTN
+
+        #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
+        print('data sent')
         time.sleep(0.1)
         pycom.rgbled(off)
-        time.sleep(4)
+        time.sleep(2)
         rx = s.recv(256)
         if rx:
             pycom.rgbled(yellow)
             time.sleep(0.1)
             pycom.rgbled(off)
             print(rx)
-        time.sleep(6)
+        time.sleep(2)
