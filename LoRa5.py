@@ -49,7 +49,7 @@ s.setblocking(True)
 for count in range (20):  #Run this loop for 200 times. Possibly it would be better to run infinite.
 # make the socket blocking
     s.setblocking(True)
-    pycom.rgbled(off)
+    pycom.rgbled(off)   # flash the LED
     time.sleep(0.6)
     pycom.rgbled(red)
     time.sleep(2)
