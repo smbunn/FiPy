@@ -22,21 +22,20 @@ print('Device ID: ' + binascii.hexlify(lora.mac()).lower().decode('utf-8'))
 # Turn off hearbeat LED
 pycom.heartbeat(False)
 
-# create an ABP authentication params
-dev_addr = struct.unpack(">l", binascii.unhexlify('00 70 C3 4D'.replace(' ','')))[0]
-nwk_swkey = binascii.unhexlify('1BFE9C81AD35B39019244D155CE31D88'.replace(' ',''))
-app_swkey = binascii.unhexlify('045ABBEFE974D3E257AC31522E8E837B'.replace(' ',''))
-
-
 # create an OTA authentication params
 #dev_eui = binascii.unhexlify('70 B3 D5 49 97 69 FC BD'.replace(' ','')) # these settings can be found from TTN
 #app_eui = binascii.unhexlify('70 B3 D5 7E F0 00 44 5B'.replace(' ','')) # these settings can be found from TTN
 #app_key = binascii.unhexlify('E3523D4CD9576F3A64410E369C52407B'.replace(' ','')) # these settings can be found from TTN
 
+# create an ABP authentication params
+dev_addr = struct.unpack(">l", binascii.unhexlify('26 01 1D 6A'.replace(' ','')))[0]
+nwk_swkey = binascii.unhexlify('B1A32A6A4BA0CAF343B5404D2A54AB88'.replace(' ',''))
+app_swkey = binascii.unhexlify('4EC93B4F80C82C3861E8AB3C42A5A05A'.replace(' ',''))
+
 # set the 3 default channels to the same frequency (must be before sending the OTAA join request)
-#lora.add_channel(0, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
-#lora.add_channel(1, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
-#lora.add_channel(2, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
+lora.add_channel(0, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
+lora.add_channel(1, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
+lora.add_channel(2, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
 
 # join a network using OTAA
 #lora.join(activation=LoRa.ABP, auth=(dev_eui, app_eui, app_key), timeout=0) #, dr=config.LORA_NODE_DR)

@@ -4,7 +4,7 @@ import binascii
 import struct
 import time   # import library for delay times
 import pycom   # library for PyCom stuff like LEDs and IO
-import config
+#import config
 
 # Initialize LoRa in LORAWAN mode.
 lora = LoRa(mode=LoRa.LORAWAN)
@@ -54,16 +54,17 @@ for count in range (20):  #Run this loop for 20 times.
     pycom.rgbled(red)
     time.sleep(2)
     pycom.rgbled(off)
-    buffer = b'test123 ' + bytes([count])  # Build what we want to send in the Send buffer
+    buffer = 'test123 ' + str(count)  # Build what we want to send in the Send buffer
     #the test123 is static and the bytes count will progress to tell us that different data is being sent
     print('Send number', count, 'Buffer=', buffer) # Print Buffer for debugging
     s.send(buffer)  # send buffer to TTN
 
     #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
     print('data sent')
-
+    time.sleep(0.5)
 # get any data received&
     s.setblocking(False)
     data = s.recv(64)
+    time.sleep(0.5)
     print(data)  #anything received?
     time.sleep(58)  # wait time between packets sent
