@@ -46,7 +46,7 @@ s.setsockopt(socket.SOL_LORA, socket.SO_DR, 0)
 s.setblocking(True)
 
 # send some data
-for count in range (20):  #Run this loop for 200 times. Possibly it would be better to run infinite.
+for count in range (20):  #Run this loop for 20 times.
 # make the socket blocking
     s.setblocking(True)
     pycom.rgbled(off)   # flash the LED
@@ -65,5 +65,5 @@ for count in range (20):  #Run this loop for 200 times. Possibly it would be bet
 # get any data received&
     s.setblocking(False)
     data = s.recv(64)
-    print(data)
-    time.sleep(58)  # wait time between join tries
+    print(data)  #anything received?
+    time.sleep(58)  # wait time between packets sent
