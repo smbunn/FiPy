@@ -63,31 +63,32 @@ for i in range(3, 16):
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # set the LoRaWAN data rate
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 0)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
 
 # make the socket blocking
-s.setblocking(False)
+# make the socket blocking
+s.setblocking(True)
 
-time.sleep(5.0)
+# send some data
+for count in range (20):  #Run this loop for 20 times.
+# make the socket blocking
+    s.setblocking(True)
+    pycom.rgbled(off)   # flash the LED
+    time.sleep(0.6)
+    pycom.rgbled(red)
+    time.sleep(2)
+    pycom.rgbled(off)
+    buffer = 'test123 ' + str(count)  # Build what we want to send in the Send buffer
+    #the test123 is static and the bytes count will progress to tell us that different data is being sent
+    print('Send number', count, 'Buffer=', buffer) # Print Buffer for debugging
+    s.send(buffer)  # send buffer to TTN
 
-""" Your own code can be written below! """
-while True:
-    for i in range (255):
-        pycom.rgbled(blue)
-        buffer = 'test123 ' + str(i)  # Build what we want to send in the Send buffer
-        #the test123 is static and the bytes count will progress to tell us that different data is being sent
-        print('Send number', i, 'Buffer=', buffer) # Print Buffer for debugging
-        s.send(buffer)  # send buffer to TTN
-
-        #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
-        print('data sent')
-        time.sleep(0.1)
-        pycom.rgbled(off)
-        time.sleep(2)
-        rx = s.recv(256)
-        if rx:
-            pycom.rgbled(yellow)
-            time.sleep(0.1)
-            pycom.rgbled(off)
-            print(rx)
-        time.sleep(2)
+    #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
+    print('data sent')
+    time.sleep(0.5)
+# get any data received&
+    s.setblocking(False)
+    data = s.recv(64)
+    time.sleep(0.5)
+    print(data)  #anything received?
+    time.sleep(58)  # wait time between packets sent
