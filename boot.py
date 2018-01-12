@@ -4,7 +4,7 @@ from network import WLAN
 wlan = WLAN() # get current object, without changing the mode
 
 if machine.reset_cause() != machine.SOFT_RESET:
-    wlan.init(mode=WLAN.STA)
+    wlan.init(mode=WLAN.STA, antenna = WLAN.EXT_ANT)
     # configuration below MUST match your home router settings!!
     wlan.ifconfig(config=('192.168.110.252', '255.255.255.0', '192.168.110.1', '192.168.110.1'))
 

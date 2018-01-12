@@ -69,8 +69,8 @@ s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
 # make the socket blocking
 s.setblocking(True)
 
-# send some data
-for count in range (20):  #Run this loop for 20 times.
+# send some dataCCCCC
+for count in range (2000):  #Run this loop for 20 times.
 # make the socket blocking
     s.setblocking(True)
     pycom.rgbled(off)   # flash the LED
@@ -91,4 +91,4 @@ for count in range (20):  #Run this loop for 20 times.
     data = s.recv(64)
     time.sleep(0.5)
     print(data)  #anything received?
-    time.sleep(58)  # wait time between packets sent
+    time.sleep(18)  # wait time between packets sent
