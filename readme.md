@@ -5,7 +5,7 @@ This is work in progress on a project to learn LoRa, SigFox and NB-IOT (or CAT -
 ## Project
 
 I plan to use a PySense connected to my FiPy.  Battery powered (2000mAh LiPo) and mounted to my bike
-My Android mobile phone posts GPS coordinates to the FiPy using BLE  [Android Link] [android] 
+My Android mobile phone posts GPS coordinates to the FiPy using BLE  [Android Link] [android]
 
 The PySense reports humidty, temperature, barometric pressure, ambient light, pitch, yaw and roll.
 These are combined with GPS coordinates into a packed Hex payload.
@@ -14,7 +14,7 @@ Kotahi provide the gateway for LoRa (and I also have my own single channel packe
 [Single Channel Packet Forwrder Raspberry Pi Hat] [hat]
 
 [android]: http://www.meowsbox.com/en/btgps
-[hat] : http://wiki.dragino.com/index.php?title=Lora/GPS_HAT
+[hat]: http://wiki.dragino.com/index.php?title=Lora/GPS_HAT
 
 ## Folder structure
 
