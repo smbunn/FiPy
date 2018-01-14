@@ -16,7 +16,7 @@ for count in range (2000):
     print("MPL3115A2 temperature: " + str(mp.temperature()))
     print("Altitude: " + str(mp.altitude()))
     mpp = MPL3115A2(py,mode=PRESSURE) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
-    print("Pressure: " + str(mpp.pressure()))
+    print("Pressure: " + str(mpp.pressure())) #Pressure does not work too well
 
     print("Temperature: " + str(si.temperature())+ " deg C and Relative Humidity: " + str(si.humidity()) + " %RH")
     print("Dew point: "+ str(si.dew_point()) + " deg C")
