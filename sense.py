@@ -5,6 +5,7 @@ from LIS2HH12 import LIS2HH12
 from SI7006A20 import SI7006A20
 from LTR329ALS01 import LTR329ALS01
 from MPL3115A2 import MPL3115A2,ALTITUDE,PRESSURE
+import time   # import library for delay times
 
 for count in range (2000):
     py = Pysense()
@@ -30,3 +31,4 @@ for count in range (2000):
     print("Pitch: " + str(li.pitch()))
 
     print("Battery voltage: " + str(py.read_battery_voltage()))
+    time.sleep(20)  # wait time between packets sent
