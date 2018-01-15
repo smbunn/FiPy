@@ -6,6 +6,20 @@ from SI7006A20 import SI7006A20
 from LTR329ALS01 import LTR329ALS01
 from MPL3115A2 import MPL3115A2,ALTITUDE,PRESSURE
 import time   # import library for delay times
+import pycom
+import socket
+import binascii
+import struct
+
+# Colors
+off = 0x000000
+red = 0xff0000
+green = 0x00ff00
+blue = 0x0000ff
+yellow = 0xffff00
+
+# Turn off hearbeat LED
+pycom.heartbeat(False)
 
 for count in range (2000):
     py = Pysense()
@@ -31,4 +45,11 @@ for count in range (2000):
     print("Pitch: " + str(li.pitch()))
 
     print("Battery voltage: " + str(py.read_battery_voltage()))
+    pycom.rgbled(blue)
+    time.sleep(0.5)
+    pycom.rgbled(off)
+    time.sleep(0.5)
+    pycom.rgbled(red)
+    time.sleep(0.5)
+    pycom.rgbled(off)
     time.sleep(20)  # wait time between packets sent
