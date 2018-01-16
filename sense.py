@@ -55,24 +55,20 @@ for count in range (2000):
     si = SI7006A20(py)
     lt = LTR329ALS01(py)
     li = LIS2HH12(py)
-    s.setblocking(True)
     print("Count=", count)
     print("MPL3115A2 temperature: " + str(mp.temperature()))
     print("Altitude: " + str(mp.altitude()))
     mpp = MPL3115A2(py,mode=PRESSURE) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
     print("Pressure: " + str(mpp.pressure())) #Pressure does not work too well
-
     print("Temperature: " + str(si.temperature())+ " deg C and Relative Humidity: " + str(si.humidity()) + " %RH")
     print("Dew point: "+ str(si.dew_point()) + " deg C")
     t_ambient = 24.4
     print("Humidity Ambient for " + str(t_ambient) + " deg C is " + str(si.humid_ambient(t_ambient)) + "%RH")
-
     print("Light (channel Blue lux, channel Red lux): " + str(lt.light()))
-
     print("Acceleration: " + str(li.acceleration()))
     print("Roll: " + str(li.roll()))
     print("Pitch: " + str(li.pitch()))
-    voltage = py.read_battery_voltage
+    vt = py.read_battery_voltage()
     print("Battery voltage: " + str(py.read_battery_voltage()))
     pycom.rgbled(blue)
     time.sleep(0.5)
@@ -81,7 +77,10 @@ for count in range (2000):
     pycom.rgbled(red)
     time.sleep(0.5)
     pycom.rgbled(off)
-    s.send(buffer)  # send buffer to TTN
+    s.setblocking(True)
+    data = bytearray(2)
+    data = bytearray(struct.pack("f", vt))
+    s.send(data)  # send buffer to TTN
 
     #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
     print('data sent')
@@ -91,3 +90,4 @@ for count in range (2000):
     data = s.recv(64)
     time.sleep(0.5)
     print(data)  #anything received?time.sleep(20)  # wait time between packets sent
+    time.sleep(58)
