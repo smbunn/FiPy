@@ -79,7 +79,7 @@ for count in range (2000):
     pycom.rgbled(off)
     s.setblocking(True)
     data = bytearray(2)
-    data = bytearray(struct.pack("f", vt))
+    data = bytearray(struct.pack(">f", vt))
     s.send(data)  # send buffer to TTN
 
     #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
