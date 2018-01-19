@@ -82,7 +82,7 @@ for count in range (2000):
     data = bytearray(8)
     data[0:4] = bytearray(struct.pack(">f", vt))
     data[4:8] = bytearray(struct.pack(">f", dew))
-    print ('Data = ',data)
+    print ('Data = ',vt,dew)
     s.send(data)  # send buffer to TTN
 
     #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
