@@ -1,6 +1,6 @@
 function decodeFloat(data1) {
     var binary = parseInt(data1, 16).toString(2);
-    if (binary.length < 32) 
+    if (binary.length < 32)
         binary = ('00000000000000000000000000000000'+binary).substr(binary.length);
     var sign = (binary.charAt(0) == '1')?-1:1;
     var exponent = parseInt(binary.substr(1, 8), 2) - 127;
@@ -28,5 +28,13 @@ function decodeFloat(data1) {
     return sign * significand * Math.pow(2, exponent);
 }
 
-value = decodeFloat(data);
-value;
+
+// example use
+
+//var buffer = new Blob(data);
+var v1 = data.slice(0,8);
+var value1 = decodeFloat(v1);
+var v2 = data.slice(8,16);
+var value2 = decodeFloat(v2);
+result = String(value1) + " " + String(value2);
+result;
