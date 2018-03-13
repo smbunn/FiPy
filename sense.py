@@ -93,4 +93,4 @@ for count in range (2000):
     data = s.recv(64)
     time.sleep(0.5)
     print(data)  #anything received?time.sleep(20)  # wait time between packets sent
-    time.sleep(599)
+    time.sleep(59)
