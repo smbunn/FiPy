@@ -12,6 +12,9 @@ import socket
 import binascii
 import struct
 
+import ujson
+
+
 # Colors
 off = 0x000000
 red = 0xff0000
@@ -49,6 +52,8 @@ s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 # set the LoRaWAN data rate
 s.setsockopt(socket.SOL_LORA, socket.SO_DR, 0)
 
+# Builds the json to send the request
+
 for count in range (2000):
     py = Pysense()
     mp = MPL3115A2(py,mode=ALTITUDE) # Returns height in meters. Mode may also be set to PRESSURE, returning a value in Pascals
@@ -79,10 +84,12 @@ for count in range (2000):
     time.sleep(0.5)
     pycom.rgbled(off)
     s.setblocking(True)
-    data = bytearray(8)
-    data[0:4] = bytearray(struct.pack(">f", vt))
-    data[4:8] = bytearray(struct.pack(">f", dew))
-    print ('Data = ',vt,dew)
+    data = bytearray(16)
+    data[0:4] = bytearray(struct.pack(">i", count))
+    data[4:8] = bytearray(struct.pack(">f", vt))
+    data[8:12] = bytearray(struct.pack(">f", dew))
+    data[12:16] = bytearray(struct.pack(">f", mp.temperature()))
+    print ('Data = ',count,vt,dew, mp.temperature() )
     s.send(data)  # send buffer to TTN
 
     #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
