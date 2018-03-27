@@ -64,9 +64,9 @@ for count in range (2000):
     print("Battery voltage: " +str(vt))
     dew = si.dew_point()
     print("Dew point: "+ str(dew) + " deg C")
+    mp = MPL3115A2(py,mode=ALTITUDE) # Returns height in meters. Mode may also be set to PRESSURE, returning a value in Pascals
     print("MPL3115A2 temperature: " + str(mp.temperature()))
     temp1 = mp.temperature()
-    mp = MPL3115A2(py,mode=ALTITUDE) # Returns height in meters. Mode may also be set to PRESSURE, returning a value in Pascals
     alt1 = mp.altitude()+100.0
     print("Altitude: " + str(alt1))
     mpp = MPL3115A2(py,mode=PRESSURE) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
@@ -79,7 +79,10 @@ for count in range (2000):
     relhum = si.humid_ambient(t_ambient)
     print("Humidity Ambient for " + str(t_ambient) + " deg C is " + str(relhum) + "%RH")
     print("Light (channel Blue lux, channel Red lux): " + str(lt.light()))
-    acc1 = li.acceleration()
+    acct = li.acceleration()
+    acc1 = acct[0]
+    acc2 = acct[1]
+    acc3 = acct[2]
     roll1 = li.roll()
     pitch1 = li.pitch()
     print("Acceleration: " + str(acc1))
@@ -93,8 +96,7 @@ for count in range (2000):
     pycom.rgbled(red)
     time.sleep(0.5)
     pycom.rgbled(off)
-    s.setblocking(True)
-    data = bytearray(48)
+    data = bytearray(56)
     data[0:4] = bytearray(struct.pack(">i", count))
     data[4:8] = bytearray(struct.pack(">f", vt))
     data[8:12] = bytearray(struct.pack(">f", dew))
@@ -104,13 +106,14 @@ for count in range (2000):
     data[24:28] = bytearray(struct.pack(">f", temp2))
     data[28:32] = bytearray(struct.pack(">f", hum1))
     data[32:36] = bytearray(struct.pack(">f", relhum))
-    data[36:40] = bytearray(struct.pack(">f", roll1))
-    data[40:44] = bytearray(struct.pack(">f", roll1))
-    data[44:48] = bytearray(struct.pack(">f", pitch1))
-    print ('Data = ',count,vt,dew, temp1, alt1, press1, temp2, hum1, relhum, acc1, roll1, pitch1 )
-    s.send(data)  # send buffer to TTN
-
-    #s.send(bytes([0x01, 0x02, 0x03, 0x04]))
+    data[36:40] = bytearray(struct.pack(">f", acc1))
+    data[40:44] = bytearray(struct.pack(">f", acc2))
+    data[44:48] = bytearray(struct.pack(">f", acc2))
+    data[48:52] = bytearray(struct.pack(">f", roll1))
+    data[52:56] = bytearray(struct.pack(">f", pitch1))
+    print ('Data = ',count,vt,dew, temp1, alt1, press1, temp2, hum1, relhum, acc1, acc2, acc3, roll1, pitch1 )
+    s.setblocking(True)
+    s.send(data)  # send buffer to AWS
     print('data sent')
     time.sleep(0.5)
     # get any data received&
