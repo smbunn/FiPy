@@ -23,28 +23,28 @@ blue = 0x0000ff
 yellow = 0xffff00
 
 # Initialize LoRa in LORAWAN mode.
-lora = LoRa(mode=LoRa.LORAWAN)
-
-# Set up KotahiNet channels
-lora.add_channel(0, frequency=864862500, dr_min=0, dr_max=5)
-lora.add_channel(1, frequency=865062500, dr_min=0, dr_max=5)
-lora.add_channel(2, frequency=865402500, dr_min=0, dr_max=5)
-lora.add_channel(3, frequency=865602500, dr_min=0, dr_max=5)
-lora.add_channel(4, frequency=865985000, dr_min=0, dr_max=5)
-lora.add_channel(5, frequency=866200000, dr_min=0, dr_max=5)
-lora.add_channel(6, frequency=866400000, dr_min=0, dr_max=5)
-lora.add_channel(7, frequency=866600000, dr_min=0, dr_max=5)
+# Initialize LoRa in LORAWAN mode.
+# Please pick the region that matches where you are using the device:
+# Asia = LoRa.AS923
+# Australia = LoRa.AU915
+# Europe = LoRa.EU868
+# United States = LoRa.US915
+lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.AU915)
 
 # Turn off hearbeat LED
 pycom.heartbeat(False)
 
 # create an ABP authentication params
-dev_addr = struct.unpack(">l", binascii.unhexlify('26 01 14 C3'.replace(' ','')))[0]
-nwk_swkey = binascii.unhexlify('1AEC72E3CABEF4F94DE3E1E0DD05A503'.replace(' ',''))
-app_swkey = binascii.unhexlify('069D8923DCE96185AC159D6DB708DC5B'.replace(' ',''))
+dev_addr = struct.unpack(">l", binascii.unhexlify('26 06 22 DD'.replace(' ','')))[0]
+nwk_swkey = binascii.unhexlify('F088B79348D05C782F749BFE9D105220'.replace(' ',''))
+app_swkey = binascii.unhexlify('647706A5E324855B638E99E9D018B8A2'.replace(' ',''))
 
 # join a network using ABP (Activation By Personalization)
 lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
+
+while not lora.has_joined():
+    time.sleep(1)
+    print('Waiting to Join LoRaWAN Network...')
 
 # create a LoRa socket
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
@@ -64,13 +64,13 @@ for count in range (2000):
     print("Battery voltage: " +str(vt))
     dew = si.dew_point()
     print("Dew point: "+ str(dew) + " deg C")
-    mp = MPL3115A2(py,mode=ALTITUDE) # Returns height in meters. Mode may also be set to PRESSURE, returning a value in Pascals
-    print("MPL3115A2 temperature: " + str(mp.temperature()))
-    temp1 = mp.temperature()
-    alt1 = mp.altitude()+100.0
+#   mp = MPL3115A2(py,mode=ALTITUDE) # Returns height in meters. Mode may also be set to PRESSURE, returning a value in Pascals
+#    print("MPL3115A2 temperature: " + str(mp.temperature()))
+    temp1 = 35.3 #mp.temperature()
+    alt1 = 90.2 # mp.altitude()+100.0
     print("Altitude: " + str(alt1))
-    mpp = MPL3115A2(py,mode=PRESSURE) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
-    press1 = mpp.pressure()
+#    mpp = MPL3115A2(py,mode=PRESSURE) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
+    press1 = 1001.3 #mpp.pressure()
     print("Pressure: " + str(press1)) #Pressure does not work too well
     temp2 = si.temperature()
     hum1 = si.humidity()

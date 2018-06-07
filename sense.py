@@ -14,7 +14,6 @@ import struct
 
 import ujson
 
-
 # Colors
 off = 0x000000
 red = 0xff0000
@@ -23,25 +22,22 @@ blue = 0x0000ff
 yellow = 0xffff00
 
 # Initialize LoRa in LORAWAN mode.
-lora = LoRa(mode=LoRa.LORAWAN)
-
+lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.AU915, public=True)
 # Set up KotahiNet channels
-lora.add_channel(0, frequency=864862500, dr_min=0, dr_max=5)
-lora.add_channel(1, frequency=865062500, dr_min=0, dr_max=5)
-lora.add_channel(2, frequency=865402500, dr_min=0, dr_max=5)
-lora.add_channel(3, frequency=865602500, dr_min=0, dr_max=5)
-lora.add_channel(4, frequency=865985000, dr_min=0, dr_max=5)
-lora.add_channel(5, frequency=866200000, dr_min=0, dr_max=5)
-lora.add_channel(6, frequency=866400000, dr_min=0, dr_max=5)
-lora.add_channel(7, frequency=866600000, dr_min=0, dr_max=5)
-
+# leave channels 8-15 and 65
+for index in range(0, 8):
+   lora.remove_channel(index)  # remove 0-7
+for index in range(16, 65):
+   lora.remove_channel(index)  # remove 16-64
+for index in range(66, 72):
+  lora.remove_channel(index)   # remove 66-71
 # Turn off hearbeat LED
 pycom.heartbeat(False)
 
 # create an ABP authentication params
-dev_addr = struct.unpack(">l", binascii.unhexlify('00 70 C3 4D'.replace(' ','')))[0]
-nwk_swkey = binascii.unhexlify('1BFE9C81AD35B39019244D155CE31D88'.replace(' ',''))
-app_swkey = binascii.unhexlify('045ABBEFE974D3E257AC31522E8E837B'.replace(' ',''))
+dev_addr = struct.unpack(">l", binascii.unhexlify('26 00 2C 58'.replace(' ','')))[0]
+nwk_swkey = binascii.unhexlify('37 70 5E 6D F5 04 8F 2F 42 87 E5 3F 09 78 A9 11'.replace(' ',''))
+app_swkey = binascii.unhexlify('A1 13 D6 0F 1A 9C 08 9F E6 94 D6 83 76 9F 8B DE'.replace(' ',''))
 
 # join a network using ABP (Activation By Personalization)
 lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
@@ -57,19 +53,16 @@ py = Pysense()
 si = SI7006A20(py)
 lt = LTR329ALS01(py)
 li = LIS2HH12(py)
+mpp = MPL3115A2(py) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
 
-for count in range (2000):
+for count in range (200000):
     print("Count=", count)
     vt = py.read_battery_voltage()
     print("Battery voltage: " +str(vt))
     dew = si.dew_point()
     print("Dew point: "+ str(dew) + " deg C")
-    mp = MPL3115A2(py,mode=ALTITUDE) # Returns height in meters. Mode may also be set to PRESSURE, returning a value in Pascals
-    print("MPL3115A2 temperature: " + str(mp.temperature()))
-    temp1 = mp.temperature()
-    alt1 = mp.altitude()+100.0
-    print("Altitude: " + str(alt1))
-    mpp = MPL3115A2(py,mode=PRESSURE) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
+    temp1 = mpp.temperature()
+    print("Tempertaure1: " + str(temp1))
     press1 = mpp.pressure()
     print("Pressure: " + str(press1)) #Pressure does not work too well
     temp2 = si.temperature()
@@ -101,7 +94,7 @@ for count in range (2000):
     data[4:8] = bytearray(struct.pack(">f", vt))
     data[8:12] = bytearray(struct.pack(">f", dew))
     data[12:16] = bytearray(struct.pack(">f", temp1))
-    data[16:20] = bytearray(struct.pack(">f", alt1))
+    data[16:20] = bytearray(struct.pack(">f", roll1))
     data[20:24] = bytearray(struct.pack(">f", press1))
     data[24:28] = bytearray(struct.pack(">f", temp2))
     data[28:32] = bytearray(struct.pack(">f", hum1))
@@ -111,10 +104,10 @@ for count in range (2000):
     data[44:48] = bytearray(struct.pack(">f", acc3))
 #    data[48:52] = bytearray(struct.pack(">f", roll1))
 #    data[52:56] = bytearray(struct.pack(">f", pitch1))
-    print ('Data = ',count,vt,dew, temp1, alt1, press1, temp2, hum1, relhum, acc1, acc2, acc3, roll1, pitch1 )
+    print ('Data = ',count,vt,dew, temp1, roll1, press1, temp2, hum1, relhum, acc1, acc2, acc3, pitch1 )
     s.setblocking(True)
     s.send(data)  # send buffer to AWS
-    print('data sent')
+    print('data sent') #print the sent data fields
     time.sleep(0.5)
     # get any data received&
     s.setblocking(False)
