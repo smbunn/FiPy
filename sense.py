@@ -11,9 +11,8 @@ import pycom
 import socket
 import binascii
 import struct
-
 import ujson
-
+  
 # Colors
 off = 0x000000
 red = 0xff0000
