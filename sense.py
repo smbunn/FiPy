@@ -76,7 +76,7 @@ for count in range (999999):
     acc3 = acct[2]
     roll1 = li.roll()
     pitch1 = li.pitch()
-    print("Acceleration: " + str(acc1) + str(acc2) +str(acc3))
+    print("Acceleration: " + str(acc1) + "  " + str(acc2) + "  " + str(acc3))
     print("Roll: " + str(roll1))
     print("Pitch: " + str(pitch1))
     # Flash the light every time a payload is sent
