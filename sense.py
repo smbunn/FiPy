@@ -22,7 +22,6 @@ yellow = 0xffff00
 
 # Initialize LoRa in LORAWAN mode.
 lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.AU915, public=True)
-# Set up KotahiNet channels
 # leave channels 8-15 and 65
 for index in range(0, 8):
    lora.remove_channel(index)  # remove 0-7
@@ -54,7 +53,7 @@ lt = LTR329ALS01(py)
 li = LIS2HH12(py)
 mpp = MPL3115A2(py) # Returns pressure in Pa. Mode may also be set to ALTITUDE, returning a value in meters
 
-for count in range (200000):
+for count in range (999999):
     print("Count=", count)
     vt = py.read_battery_voltage()
     print("Battery voltage: " +str(vt))
@@ -77,7 +76,7 @@ for count in range (200000):
     acc3 = acct[2]
     roll1 = li.roll()
     pitch1 = li.pitch()
-    print("Acceleration: " + str(acc1))
+    print("Acceleration: " + str(acc1) + str(acc2) +str(acc3))
     print("Roll: " + str(roll1))
     print("Pitch: " + str(pitch1))
     # Flash the light every time a payload is sent
@@ -103,7 +102,7 @@ for count in range (200000):
     data[44:48] = bytearray(struct.pack(">f", acc3))
 #    data[48:52] = bytearray(struct.pack(">f", roll1))
 #    data[52:56] = bytearray(struct.pack(">f", pitch1))
-    print ('Data = ',count,vt,dew, temp1, roll1, press1, temp2, hum1, relhum, acc1, acc2, acc3, pitch1 )
+    print ('Data = ',count,vt,dew, temp1, roll1, press1, temp2, hum1, relhum, acc1, acc2, acc3, roll1, pitch1 )
     s.setblocking(True)
     s.send(data)  # send buffer to AWS
     print('data sent') #print the sent data fields
@@ -112,5 +111,5 @@ for count in range (200000):
     s.setblocking(False)
     data_in = s.recv(64)
     time.sleep(0.5)
-    print('Data recieved =',data_in)  #anything received?time.sleep(20)  # wait time between packets sent
-    time.sleep(59)
+    print('Data recieved =',data_in)  #anything received?time.sleep(59)
+    time.sleep(59) # wait time between packets sent
