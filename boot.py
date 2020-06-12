@@ -13,3 +13,4 @@ if not wlan.isconnected():
     wlan.connect(ssid='TheBunns', auth=(WLAN.WPA2, 'nowisthetime'), timeout=5000)
     while not wlan.isconnected():
         machine.idle() # save power while waiting
+# update gateway
