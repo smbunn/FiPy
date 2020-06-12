@@ -12,7 +12,7 @@ import socket
 import binascii
 import struct
 import ujson
-  
+
 # Colors
 off = 0x000000
 red = 0xff0000
@@ -45,7 +45,7 @@ lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # set the LoRaWAN data rate
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 0)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
 
 # Builds the bytearray to send the request
 py = Pysense()
@@ -110,7 +110,7 @@ for count in range (200000):
     time.sleep(0.5)
     # get any data received&
     s.setblocking(False)
-    data = s.recv(64)
+    data_in = s.recv(64)
     time.sleep(0.5)
-    print(data)  #anything received?time.sleep(20)  # wait time between packets sent
+    print('Data recieved =',data_in)  #anything received?time.sleep(20)  # wait time between packets sent
     time.sleep(59)
