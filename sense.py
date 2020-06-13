@@ -112,4 +112,4 @@ for count in range (999999):
     data_in = s.recv(64)
     time.sleep(0.5)
     print('Data recieved =',data_in)  #anything received?time.sleep(59)
-    time.sleep(59) # wait time between packets sent
+    time.sleep(51) # wait time between packets sent
