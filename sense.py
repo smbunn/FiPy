@@ -21,7 +21,7 @@ blue = 0x0000ff
 yellow = 0xffff00
 
 # Initialize LoRa in LORAWAN mode.
-lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.AU915, public=True)
+lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.AU915, LoRa.BW_125KHZ, public=True)
 # leave channels 8-15 and 65
 for index in range(0, 8):
    lora.remove_channel(index)  # remove 0-7
@@ -44,7 +44,7 @@ lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # set the LoRaWAN data rate
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 7)
 
 # Builds the bytearray to send the request
 py = Pysense()
