@@ -10,11 +10,7 @@ My Android mobile phone posts GPS coordinates to the FiPy using BLE  [Android Li
 The PySense reports humidty, temperature, barometric pressure, ambient light, pitch, yaw and roll.
 These are combined with GPS coordinates into a packed Hex payload.
 
-Kotahi provide the gateway for LoRa (and I also have my own single channel packet forwarder
-[Single Channel Packet Forwarder Raspberry Pi Hat][hat] .
-
-[android]: http://www.meowsbox.com/en/btgps
-[hat]: http://wiki.dragino.com/index.php?title=Lora/GPS_HAT
+I provide my own gateway for LoRa (I have my own 8-channel packet forwarder  using The THings Network gateway
 
 ## Folder structure
 
