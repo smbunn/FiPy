@@ -21,7 +21,7 @@ blue = 0x0000ff
 yellow = 0xffff00
 
 # Initialize LoRa in LORAWAN mode.
-lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.AU915, public=True)
+lora = LoRa(mode=LoRa.LORAWAN, bandwidth=LoRa.BW_500KHZ, region=LoRa.AU915, public=True)
 # leave channels 8-15 and 65
 for index in range(0, 8):
    lora.remove_channel(index)  # remove 0-7
@@ -44,7 +44,7 @@ lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # set the LoRaWAN data rate
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 7)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
 
 # Builds the bytearray to send the request
 py = Pysense()
@@ -94,12 +94,12 @@ for count in range (999999):
     data[12:16] = bytearray(struct.pack(">f", temp1))
     data[16:20] = bytearray(struct.pack(">f", roll1))
     data[20:24] = bytearray(struct.pack(">f", press1))
-    data[24:28] = bytearray(struct.pack(">f", temp2))
-    data[28:32] = bytearray(struct.pack(">f", hum1))
-    data[32:36] = bytearray(struct.pack(">f", relhum))
-    data[36:40] = bytearray(struct.pack(">f", acc1))
-    data[40:44] = bytearray(struct.pack(">f", acc2))
-    data[44:48] = bytearray(struct.pack(">f", acc3))
+#    data[24:28] = bytearray(struct.pack(">f", temp2))
+#    data[28:32] = bytearray(struct.pack(">f", hum1))
+#    data[32:36] = bytearray(struct.pack(">f", relhum))
+#    data[36:40] = bytearray(struct.pack(">f", acc1))
+#    data[40:44] = bytearray(struct.pack(">f", acc2))
+#    data[44:48] = bytearray(struct.pack(">f", acc3))
 #    data[48:52] = bytearray(struct.pack(">f", roll1))
 #    data[52:56] = bytearray(struct.pack(">f", pitch1))
     print ('Data = ',count,vt,dew, temp1, roll1, press1, temp2, hum1, relhum, acc1, acc2, acc3, roll1, pitch1 )
