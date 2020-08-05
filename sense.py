@@ -102,7 +102,7 @@ for count in range (999999):
     data[44:48] = bytearray(struct.pack(">f", acc3))
 #    data[48:52] = bytearray(struct.pack(">f", roll1))
 #    data[52:56] = bytearray(struct.pack(">f", pitch1))
-    print ('Data = count     vt      dew    temp1   roll1    press1   temp2    hum1    relhum    acc1       acc2        acc3       pitch1')
+    print ('Data = count     vt      dew    temp1   roll1    press1    temp2    hum1    relhum    acc1       acc2        acc3       pitch1')
     print ('Data = ',count,'  ', vt,dew, temp1, roll1, press1, temp2, hum1, relhum, acc1, acc2, acc3, pitch1 )
     s.setblocking(True)
     s.send(data)  # send buffer to AWS
